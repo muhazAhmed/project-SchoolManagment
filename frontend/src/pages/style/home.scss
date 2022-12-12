@@ -1,0 +1,40 @@
+*{
+    background-color: black;
+    color: white;
+    font-family: 'Josefin Sans', sans-serif;
+}
+.container { 
+    .main{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    
+    span{
+        color: rgb(63, 194, 255);
+    }
+    }
+
+    h3{
+        display: flex;
+        justify-content: center;
+        margin-top: 2em;
+    }
+
+    .btn button{
+        margin-top: 7em;
+        height: 4em;
+        width: 10em;
+        border: 0.2em solid gray;
+        border-radius: 1.4em;
+        background-color: inherit;
+        cursor: pointer;
+        color: white;
+        margin-left: 46%;
+
+        &:hover{
+            border: 0.2em solid rgb(63, 194, 255);
+        }
+    }
+
+}

@@ -1,0 +1,59 @@
+.add-auth{
+    display: flex;
+    justify-content: center;
+
+    .form-add{
+
+        h1{
+            display: flex;
+            justify-content: center;
+
+            .span{
+                color: rgb(62, 223, 255);;
+            }
+        }
+
+        .form-input{
+            display: flex;
+            justify-content: center;
+            justify-content:last baseline;
+            flex-wrap: wrap;
+            padding: 5em;
+            height: 5vh;
+            gap: 1em;
+
+            input{
+                padding: 1.5em;
+                border: 0.2em solid ;
+                border-radius: 2em;
+            }
+        }
+        button{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background-color: rgb(62, 223, 255);;
+            border: 0.1em solid gray;
+            padding: 1em;
+            border-radius: 1.5em;
+            margin-top: 4em;
+            margin-left: 45%;
+            width: 10em;
+
+            &:hover{
+                background-color: transparent;
+                border: 0.3em solid rgb(62, 223, 255);
+            }
+
+        }
+        .end{
+            display: flex;
+            justify-content: center;
+            margin-top: 2em;
+
+        }
+    }
+
+
+}

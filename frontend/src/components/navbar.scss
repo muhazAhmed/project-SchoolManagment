@@ -1,0 +1,28 @@
+.navbar{
+    .container{
+        padding: 1em 0em;
+        display: flex;
+        justify-content: space-between;
+        
+
+        .logo{
+            img{
+                width: 9em;
+            }
+        }
+        .links{
+            display: flex;
+            align-items: center;
+            gap: 1em;
+
+            h6{
+                font-size: 1em;
+                font-weight: 300;
+            }
+
+            span{
+                cursor: pointer;
+            }
+        }
+    }
+}

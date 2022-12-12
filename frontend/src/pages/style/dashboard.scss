@@ -1,0 +1,21 @@
+.dash-main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    span{
+        color: rgb(62, 223, 255);
+    }
+
+    .dash-btn button{
+        padding: 1em;
+        border: 0.2em solid rgb(62, 223, 255);
+        border-radius: 0.8em;
+        cursor: pointer;
+        color: white;
+
+        &:hover{
+            background-color: rgb(62, 223, 255);
+        }
+    }
+}
