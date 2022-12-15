@@ -102,33 +102,38 @@ const createStudent = async (req, res) => {
 
 const getStudent = async (req, res) => {
   try {
-    let { studentname, Id, subjects } = req.query;
-    let filter = { isDeleted: false };
 
-    if (studentname) {
-      filter.studentname = { $regex: studentname, $options: "i" };
-    }
+    let data = req.query
+        let { studentname, Id } = data
+        let filter = {
+            isDeleted: false,
+        };
 
-    if (Id) {
-      filter.Id = { $regex: Id, $options: "i" };
-    }
-    if (subjects.english) {
-      filter.subjects.english = { $regex: english, $options: "i" };
-    }
-    if (subjects.mathematics) {
-      filter.subjects.mathematics = { $regex: mathematics, $options: "i" };
-    }
-    if (subjects.science) {
-      filter.subjects.science = { $regex: science, $options: "i" };
-    }
+        if (studentname) {
+            let findByName = await studentModel.find({ studentname })
+            if (!findByName) {
+                return res.status(404).json({ status: false, message: "no students found for the given name" })
+            }
+            filter["studentname"] = studentname
+        }
 
-    let students = await studentModel.find(filter);
+        if (Id) {
+            let findById = await studentModel.find({ Id })
+            if (!findById) {
+                return res.status(404).json({ status: false, message: "no students found for the given id" })
+            }
+            filter["Id"] = Id
+        }
 
-    if (students.length == 0) {
-      return res.status(404).json("No students found");
-    }
+        let findStudent = await studentModel.find(filter)
 
-    return res.status(200).json({ students });
+        if (!findStudent.length) {
+            return res.status(404).json({ status: false, message: "No students with found with the given filter"})
+        }
+        else {
+            return res.status(200).json({ status: true, data: findStudent })
+        }
+
   } catch (error) {
     console.log(error.message);
   }
@@ -137,34 +142,34 @@ const getStudent = async (req, res) => {
 //=====================> update Student <===================
 const updateStudent = async (req, res) => {
   try {
-    let data = req.body;
-    let { studentname, phone, subjects } = data;
+    let id = req.params.studentId;
+        const data = req.body;
+  
+        const student = await studentModel.findOne({ _id: id, isDeleted: false })
 
-    let student = await studentModel.findOne({
-      studentname,
-      phone,
-      subjects,
-      userId: req.userId,
-      isDeleted: false,
-    });
-    if (!student) return res.status(404).json("Student not found");
+        if (!student) {
+            return res.status(404).send({ status: false, message: "No student exists with this student Id" })
+        }
 
-    student.studentname = studentname;
-    student.save();
 
-    student.phone = phone;
-    student.save();
+        if(data.studentname){
+            student.studentname = data.studentname
+        }
 
-    student.subjects.english = subjects.english;
-    student.save();
+        
+        if(data.subjects.english){
+            student.subjects.english = data.subjects.english
+        }
+        if(data.subjects.mathematics){
+            student.subjects.mathematics = data.subjects.mathematics
+        }
+        if(data.subjects.science){
+            student.subjects.english = data.subjects.science
+        }
+        
 
-    student.subjects.mathematics = subjects.mathematics;
-    student.save();
-
-    student.subjects.science = subjects.science;
-    student.save();
-
-    return res.status(200).json(student);
+        student.save()
+        return res.status(201).send({ status: true, message: "details updated", data: student})
   } catch (error) {
     console.log(error.message);
   }
@@ -172,23 +177,22 @@ const updateStudent = async (req, res) => {
 //=====================> Delete Student <===================
 const deleteStudent = async (req, res) => {
   try {
-    let data = req.body;
-    let { studentname, email, Id, phone, subjects, totals } = data;
 
-    let student = await studentModel.findOne({
-      studentname,
-      subjects,
-      userId: req.userId,
-      isDeleted: false,
-    });
+    let studentId = req.params.studentId
 
-    if (student) {
-      student.isDeleted = true;
-      student.save();
-      return res.status(200).json("Student deleted");
-    } else {
-      return res.status(404).json("Student not found");
-    }
+        if (!studentId) {
+            return res.status(400).json({ status: false, message: "studentId must be present in order to perform delete operation" })
+        }
+
+        let student = await studentModel.findOne({ _id: studentId, isDeleted: false })
+
+        if (!student) {
+            return res.status(404).json({ status: false, message: "No student exists with this student Id" })
+        }
+
+        await studentModel.findOneAndUpdate({ _id: studentId}, { $set: { isDeleted: true}})
+
+        return res.status(200).json({ status: true, message: "Succesful" });
   } catch (error) {
     console.log(error.message);
   }
